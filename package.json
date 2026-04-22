@@ -1,0 +1,13 @@
+{
+  "name": "login-page-web",
+  "version": "1.0.0",
+  "description": "A simple login page web app",
+  "main": "app.mjs",
+  "type": "module",
+  "scripts": {
+    "start": "node app.mjs"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
