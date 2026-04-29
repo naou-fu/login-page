@@ -1,4 +1,4 @@
-import { error } from 'console';
+
 import express from 'express';
 import fs from 'fs/promises';
 import http from 'http';
@@ -21,7 +21,9 @@ app.get('/style/style.css', (req, res) =>{
 app.get('/script/main.js', (req, res) =>{
     res.sendFile(path.join(__dirname, './script/main.js'))
 });
-
+app.get('/script/sign.js', (req, res) =>{
+    res.sendFile(path.join(__dirname, './script/sign.js'))
+});
 
 
 
@@ -35,11 +37,25 @@ app.get('/', (req, res) =>{
 
             console.error("Internal Error:", err.message);
 
-            res.status(404).type('text/plain').send('An error occurred');
+            res.status(404).type('text/plain').send('An error occurred: home');
         }
     });
 });
 
+
+
+app.get('/sign-in', (req, res) =>{
+    let filepath = path.join(__dirname, './templates/sign.html');
+
+    res.sendFile(filepath, (err) =>{
+        if (err){
+            console.error("Internal Error:", err.message);
+
+            res.status(404).type('text/plain').send('An error occurred: sign');
+        }
+    })
+    
+});
 
 app.get('/about', (req, res) =>{
     let filepath = path.join(__dirname, './templates/about.html');
@@ -48,20 +64,39 @@ app.get('/about', (req, res) =>{
         if (err){
             console.error("Internal Error:", err.message);
 
-            res.status(404).type('text/plain').send('An error occurred');
+            res.status(404).type('text/plain').send('An error occurred: about');
         }
     })
     
 });
 
+app.post('/api/user', async (req, res) =>{
+
+try {
+    let filepath = path.join(__dirname, '/data.json');
+    const rawData = await fs.readFile(filepath);
+    const data = JSON.parse(rawData);
+
+    const newuser = req.body
+    data.users.push(newuser);
+    const write = fs.writeFile(filepath, JSON.stringify(data, null, 2));
+
+    res.status(200);
+
+} catch (error) {
+    res.status(500).send('server crashed')
+}
+})
+
+
 
 app.get('/api/data', async (req, res) => {
     try {
-        const rawData = await fs.readFile(path.join('C:/Users/ms i/Documents/login-page-web/login-page/data.json'));
+        const rawData = await fs.readFile(path.join(__dirname, '/data.json'));
         res.json(JSON.parse(rawData));
     } catch (error) {
-        res.status(500)
-        console.log(error)
+        res.status(500);
+        console.log(error);
     }
 
 
@@ -76,6 +111,6 @@ console.log(__filename)
 
 
 app.listen(PORT, (err) => {
-    if (err){console.log('an error occured')};
+    if (err){console.log('an error occured: listen')};
     console.log(`app running on: http://localhost:${PORT}`);
 })

@@ -1,4 +1,12 @@
+
+
 let userdata = null;
+
+const usernameInput = document.getElementById('username');
+const passwordInput = document.getElementById('password');
+const submitButton = document.getElementById('btn-submit');
+
+
 
 fetch('http://localhost:3000/api/data')
     .then(response => response.json())
@@ -9,12 +17,23 @@ fetch('http://localhost:3000/api/data')
     })
     .catch(error => console.error(`An error occurred: ${error}`));
 
-const submitButton = document.getElementById('btn-submit');
-
 submitButton.addEventListener('click', () => {
-    if (userdata) {
-        console.log(userdata);
+    if (!userdata) {
+        alert('Data still loading. Please wait.');
+        return;
+    }
+    
+    const enteredUsername = usernameInput.value.trim();
+    const enteredPassword = passwordInput.value.trim();
+    
+    // Search through the user ARRAY for a match
+    const matchedUser = userdata.find(user => 
+        user.username === enteredUsername && user.password === enteredPassword
+    );
+    
+    if (matchedUser) {
+        alert(`Login successful! Welcome, ${matchedUser.username}.`);
     } else {
-        console.log("Hold on! Data is still loading...");
+        document.getElementById('login-message').textContent = `pass or user invalid`
     }
 });
