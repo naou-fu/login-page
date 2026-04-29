@@ -2,10 +2,10 @@
   "name": "login-page-web",
   "version": "1.0.0",
   "description": "A simple login page web app",
-  "main": "app.mjs",
+  "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon --env-file=.env app.js"
+    "start": "nodemon --watch . --ext js --env-file .env app.js"
   },
   "devDependencies": {
     "express": "^5.2.1",
