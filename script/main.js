@@ -14,8 +14,10 @@ fetch('http://localhost:3000/api/data')
 
         userdata = data.users;
         console.log("Data successfully loaded!");
+        console.log(userdata)
     })
     .catch(error => console.error(`An error occurred: ${error}`));
+
 
 submitButton.addEventListener('click', () => {
     if (!userdata) {

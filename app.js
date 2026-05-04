@@ -71,16 +71,20 @@ app.get('/about', (req, res) =>{
 });
 
 app.post('/api/user', async (req, res) =>{
-
 try {
     let filepath = path.join(__dirname, '/data.json');
     const rawData = await fs.readFile(filepath);
     const data = JSON.parse(rawData);
 
     const newuser = req.body
-    data.users.push(newuser);
-    const write = fs.writeFile(filepath, JSON.stringify(data, null, 2));
 
+
+
+    data.users.push(newuser);
+    
+    const write = await fs.writeFile(filepath, JSON.stringify(data, null, 2));
+
+    
     res.status(200);
 
 } catch (error) {
@@ -91,6 +95,12 @@ try {
 
 
 app.get('/api/data', async (req, res) => {
+    const referer = req.headers.referer;
+
+
+    if (!referer || !referer.includes('localhost')) {
+        return res.status(403).send('Direct access is restricted'); // 403 Forbidden
+    }
     try {
         const rawData = await fs.readFile(path.join(__dirname, '/data.json'));
         res.json(JSON.parse(rawData));
@@ -101,6 +111,7 @@ app.get('/api/data', async (req, res) => {
 
 
 });
+
 
 
 
