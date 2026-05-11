@@ -71,6 +71,7 @@ app.get('/about', (req, res) =>{
 });
 
 app.post('/api/user', async (req, res) =>{
+
 try {
     let filepath = path.join(__dirname, '/data.json');
     const rawData = await fs.readFile(filepath);
@@ -95,6 +96,7 @@ try {
 
 
 app.get('/api/data', async (req, res) => {
+    
     const referer = req.headers.referer;
 
 

@@ -7,6 +7,7 @@ const passwordInput = document.getElementById('password');
 const submitButton = document.getElementById('btn-submit');
 
 
+setInterval(()=>{
 
 fetch('http://localhost:3000/api/data')
     .then(response => response.json())
@@ -17,7 +18,8 @@ fetch('http://localhost:3000/api/data')
         console.log(userdata)
     })
     .catch(error => console.error(`An error occurred: ${error}`));
-
+    
+},2000);
 
 submitButton.addEventListener('click', () => {
     if (!userdata) {
@@ -32,10 +34,10 @@ submitButton.addEventListener('click', () => {
     const matchedUser = userdata.find(user => 
         user.username === enteredUsername && user.password === enteredPassword
     );
-    
-    if (matchedUser) {
-        alert(`Login successful! Welcome, ${matchedUser.username}.`);
-    } else {
+
+    if (!matchedUser) {
         document.getElementById('login-message').textContent = `pass or user invalid`
-    }
+    } 
+    alert(`Login successful! Welcome, ${matchedUser.username}.`);
+    
 });

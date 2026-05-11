@@ -5,7 +5,10 @@ const submitButton = document.getElementById('btn-submit');
 
 let userdata = null;
 
+setInterval(()=>{
+
 fetch('api/data')
+
     .then(response => response.json())
     .then(data => {
 
@@ -14,6 +17,9 @@ fetch('api/data')
         console.log(userdata)
     })
     .catch(error => console.error(`An error occurred: ${error}`));
+
+},2000);
+
 
 submitButton.addEventListener('click', () => {
     
@@ -24,7 +30,7 @@ submitButton.addEventListener('click', () => {
 
     if (!newuser.username || !newuser.password) {
         console.log('Please enter both a username and password');
-        return; // Stop the code here
+        return;
     }
 
 
