@@ -1,20 +1,3 @@
 {
-  "users": [
-    {
-      "username": "dqwfdwq",
-      "password": "fqwfq"
-    },
-    {
-      "username": "man",
-      "password": "1234"
-    },
-    {
-      "username": "woman",
-      "password": "1234"
-    },
-    {
-      "username": "boy",
-      "password": "6893"
-    }
-  ]
+  "users": []
 }
