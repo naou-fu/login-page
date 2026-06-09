@@ -1,3 +1,5 @@
+// sign.js handles the registration page behavior in the browser.
+// It validates user input and sends a registration request to the server.
 const usernameInput = document.getElementById('username');
 const passwordInput = document.getElementById('password');
 const submitButton = document.getElementById('btn-submit');

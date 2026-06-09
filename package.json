@@ -2,6 +2,7 @@
   "name": "login-page-web",
   "version": "1.0.0",
   "description": "Secure Express login site with SQLite, authentication, and authorization",
+  "notes": "This package.json includes project metadata and can be used to start the server with npm. Extra fields are allowed in package.json.",
   "main": "app.js",
   "type": "module",
   "scripts": {

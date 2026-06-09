@@ -1,3 +1,4 @@
+/* style.css defines the shared look and feel for all pages. */
 body {
   font-family: Arial, sans-serif;
   display: flex;
@@ -8,6 +9,7 @@ body {
   background: linear-gradient(180deg, #f0f4ff 0%, #e8efff 100%);
 }
 
+/* The card element centers the content and adds spacing. */
 div {
   max-width: 420px;
   width: 100%;
@@ -23,6 +25,7 @@ h1 {
   margin-bottom: 18px;
 }
 
+/* Labels are block-level to stack above inputs. */
 label {
   display: block;
   margin-top: 14px;
@@ -47,6 +50,7 @@ input:focus {
   box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
 }
 
+/* Buttons use a consistent purple style and scale to full width. */
 .btn-click {
   margin-top: 22px;
   padding: 12px 22px;
@@ -63,6 +67,7 @@ input:focus {
   background-color: #4338ca;
 }
 
+/* login-message displays validation and error text. */
 #login-message {
   margin-top: 16px;
   color: #b91c1c;

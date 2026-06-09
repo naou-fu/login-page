@@ -1,3 +1,4 @@
 {
+  "notes": "This JSON file is a sample data store structure. The server uses SQLite, so this file is not actively read by the application.",
   "users": []
 }

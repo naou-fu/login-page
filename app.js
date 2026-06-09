@@ -1,3 +1,5 @@
+// app.js is the entry point for the Express web server.
+// It configures security, sessions, routes, and the API for login/register.
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -21,14 +23,17 @@ import {
   validateUsernamePassword,
 } from './auth.js';
 
+// Required boilerplate in ESM modules to get __dirname equivalent.
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PORT = process.env.PORT || 8080;
 const app = express();
 const SQLiteStore = SQLiteStoreFactory(session);
 
+// Initialize the SQLite database and create the users table if needed.
 await initDb();
 
+// Helmet helps set secure HTTP headers in the response.
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(
   helmet.contentSecurityPolicy({
@@ -44,12 +49,16 @@ app.use(
   })
 );
 
+// Parse incoming JSON and URL-encoded form data with size limits.
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: false, limit: '10kb' }));
 app.use(cookieParser());
+
+// Trust proxy only in production so secure cookies work behind reverse proxies.
 const trustProxy = process.env.NODE_ENV === 'production';
 app.set('trust proxy', trustProxy);
 
+// Configure session management with SQLite-backed session storage.
 app.use(
   session({
     store: new SQLiteStore({
@@ -65,11 +74,12 @@ app.use(
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 1000 * 60 * 60,
+      maxAge: 1000 * 60 * 60, // 1 hour
     },
   })
 );
 
+// Rate limiting prevents brute-force and abusive requests.
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -88,14 +98,17 @@ const authLimiter = rateLimit({
 app.use(apiLimiter);
 app.use(csurf());
 
+// Serve static client-side files from script/ and style/ folders.
 app.use(express.static(path.join(__dirname, 'script')));
 app.use(express.static(path.join(__dirname, 'style')));
 
+// Add a security header for referrer policy.
 app.use((req, res, next) => {
   res.setHeader('Referrer-Policy', 'same-origin');
   next();
 });
 
+// Simple middleware to require an authenticated session.
 function requireAuth(req, res, next) {
   if (!req.session?.userId) {
     return res.status(401).json({ error: 'Authentication required' });
@@ -103,6 +116,7 @@ function requireAuth(req, res, next) {
   next();
 }
 
+// Helper to send HTML files from the templates/ folder.
 function sendHtml(fileName, res) {
   res.sendFile(path.join(__dirname, 'templates', fileName), (err) => {
     if (err) {
@@ -112,15 +126,18 @@ function sendHtml(fileName, res) {
   });
 }
 
+// Public page routes.
 app.get('/', (req, res) => sendHtml('index.html', res));
 app.get('/sign-in', (req, res) => sendHtml('sign.html', res));
 app.get('/welcome', requireAuth, (req, res) => sendHtml('welcome.html', res));
 app.get('/about', (req, res) => sendHtml('about.html', res));
 
+// CSRF token route used by client-side fetch requests.
 app.get('/api/csrf-token', (req, res) => {
   res.json({ token: req.csrfToken() });
 });
 
+// Return information about the currently authenticated user.
 app.get('/auth/me', requireAuth, async (req, res, next) => {
   try {
     const user = await getUserById(req.session.userId);
@@ -133,6 +150,7 @@ app.get('/auth/me', requireAuth, async (req, res, next) => {
   }
 });
 
+// Register a new user with validation, password hashing, and session creation.
 app.post('/auth/register', authLimiter, async (req, res, next) => {
   try {
     const username = sanitizeField(req.body.username);
@@ -168,6 +186,7 @@ app.post('/auth/register', authLimiter, async (req, res, next) => {
   }
 });
 
+// Log in an existing user by verifying credentials and creating a new session.
 app.post('/auth/login', authLimiter, async (req, res, next) => {
   try {
     const username = sanitizeField(req.body.username);
@@ -205,6 +224,7 @@ app.post('/auth/login', authLimiter, async (req, res, next) => {
   }
 });
 
+// Log the user out by destroying the session and clearing the session cookie.
 app.post('/auth/logout', requireAuth, (req, res, next) => {
   req.session.destroy((error) => {
     if (error) {
@@ -215,6 +235,7 @@ app.post('/auth/logout', requireAuth, (req, res, next) => {
   });
 });
 
+// Global error handler. It catches CSRF errors and other unexpected server issues.
 app.use((err, req, res, next) => {
   if (err?.code === 'EBADCSRFTOKEN') {
     return res.status(403).json({ error: 'Invalid CSRF token' });
@@ -225,6 +246,7 @@ app.use((err, req, res, next) => {
 
 const MAX_PORT_RETRIES = 5;
 
+// Start the HTTP server, with retry logic if the port is already in use.
 function startServer(port, retriesLeft) {
   const server = app.listen(port, () => {
     console.log(`app running on: http://localhost:${port}`);

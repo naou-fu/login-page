@@ -4,12 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login</title>
+  <!-- External CSS styles are loaded from style.css. -->
   <link rel="stylesheet" href="style.css" />
+  <!-- Minimal favicon avoids browser errors without loading an image file. -->
   <link rel="icon" href="data:," />
 </head>
 <body>
   <div>
     <h1>Login</h1>
+    <!-- Username and password fields should match the element IDs used in main.js. -->
     <label for="username">Username:</label>
     <input type="text" id="username" autocomplete="username" placeholder="Enter your username" />
     <label for="password">Password:</label>
@@ -18,6 +21,7 @@
     <p id="login-message"></p>
     <a href="/sign-in">No account? Register here</a>
   </div>
+  <!-- The browser loads the login page script last so the DOM is ready. -->
   <script type="module" src="main.js"></script>
 </body>
 </html>

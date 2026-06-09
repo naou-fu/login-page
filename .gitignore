@@ -1,3 +1,8 @@
+# Ignore installed dependencies so they are not checked into version control.
 node_modules
+
+# Ignore secrets and environment configuration.
 .env
+
+# Ignore the local SQLite database file used at runtime.
 data.db

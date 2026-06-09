@@ -1,14 +1,18 @@
+// main.js powers the login page in the browser.
+// It reads form values, requests a CSRF token, and calls the /auth/login API.
 const usernameInput = document.getElementById('username');
 const passwordInput = document.getElementById('password');
 const submitButton = document.getElementById('btn-submit');
 const loginMessage = document.getElementById('login-message');
 
+// Fetch the CSRF token from the server to protect against cross-site request forgery.
 async function getCsrfToken() {
   const response = await fetch('/api/csrf-token');
   const data = await response.json();
   return data.token;
 }
 
+// signIn validates the form, sends credentials, and navigates on success.
 async function signIn() {
   loginMessage.textContent = '';
 

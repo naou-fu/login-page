@@ -1,3 +1,5 @@
+// welcome.js controls the authenticated welcome page.
+// It fetches the current user profile and handles logout.
 const welcomeText = document.getElementById('welcome-text');
 const statusMessage = document.getElementById('status-message');
 const logoutButton = document.getElementById('logout-button');
@@ -8,6 +10,8 @@ async function getCsrfToken() {
   return data.token;
 }
 
+// fetchProfile requests the /auth/me endpoint to verify the logged-in user.
+// If the session is invalid, it redirects back to the login page.
 async function fetchProfile() {
   const response = await fetch('/auth/me', { method: 'GET', credentials: 'same-origin' });
   if (!response.ok) {
@@ -18,6 +22,7 @@ async function fetchProfile() {
   welcomeText.textContent = `Welcome, ${user.username}!`;
 }
 
+// logout sends a request to destroy the server-side session.
 async function logout() {
   try {
     const token = await getCsrfToken();
