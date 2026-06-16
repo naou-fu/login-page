@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Create account</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="data:," />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="icon" href="data:," />
 </head>
 <body>
-  <div>
-    <h1>Register</h1>
-    <label for="username">Username:</label>
-    <input type="text" id="username" autocomplete="username" placeholder="Choose a username" />
-    <label for="password">Password:</label>
-    <input type="password" id="password" autocomplete="new-password" placeholder="Create a secure password" />
-    <button id="btn-submit" class="btn-click">Create account</button>
-    <p id="login-message"></p>
-    <p><a href="/">Already have an account? Sign in</a></p>
-  </div>
-  <script type="module" src="sign.js"></script>
+    <div>
+        <h1>Sign In</h1>
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="Enter your username" name="username">
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Enter your password" name="password">
+        <button id="btn-submit" class="btn-click">submit</button>
+        <p id="login-message"></p>
+    </div>
+    <script type="module" src="/script/sign.js"></script>
 </body>
 </html>

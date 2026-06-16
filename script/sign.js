@@ -1,48 +1,57 @@
+
 const usernameInput = document.getElementById('username');
 const passwordInput = document.getElementById('password');
 const submitButton = document.getElementById('btn-submit');
-const loginMessage = document.getElementById('login-message');
 
-async function getCsrfToken() {
-  const response = await fetch('/api/csrf-token');
-  const data = await response.json();
-  return data.token;
-}
+let userdata = null;
 
-async function registerAccount() {
-  loginMessage.textContent = '';
 
-  const username = usernameInput.value.trim();
-  const password = passwordInput.value.trim();
+fetch('api/data')
 
-  if (!username || !password) {
-    loginMessage.textContent = 'Please enter both username and password.';
-    return;
-  }
+    .then(response => response.json())
+    .then(data => {
 
-  const token = await getCsrfToken();
-  const response = await fetch('/auth/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-csrf-token': token,
-    },
-    body: JSON.stringify({ username, password }),
-  });
+        userdata = data.users;
+        console.log("Data successfully loaded!");
+        console.log(userdata)
+    })
+    .catch(error => console.error(`An error occurred: ${error}`));
 
-  const data = await response.json();
 
-  if (!response.ok) {
-    loginMessage.textContent = data.error || (data.errors && data.errors.join(' ')) || 'Registration failed.';
-    return;
-  }
+submitButton.addEventListener('click', () => {
+    
+    const newuser = { 
+        username: usernameInput.value.trim(), 
+        password: passwordInput.value.trim()
+    };
 
-  window.location.assign('/welcome');
-}
+    if (!newuser.username || !newuser.password) {
+        console.log('Please enter both a username and password');
+        return;
+    }
 
-submitButton.addEventListener('click', registerAccount);
-passwordInput.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
-    registerAccount();
-  }
+
+    const userexist = userdata.find(user => user.username === newuser.username);
+
+
+    if (userexist) {
+        console.log('User already exists! Try a different name.');
+    } else {
+
+        fetch('/api/user', {
+            method: 'POST',
+            headers: {'Content-type' : 'application/json'},
+            body: JSON.stringify(newuser)
+        })
+        .then(response => response.json())
+        .then(msg => {
+            console.log(msg.message);
+            console.log('Done!');
+            
+            userdata.push(newuser); 
+        })
+        .catch(err => console.error("Error saving user:", err));
+
+        window.open('/', '_parent');
+    }
 });

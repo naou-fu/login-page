@@ -1,0 +1,56 @@
+// Variables (SASS syntax)
+$font-family: Arial, sans-serif
+$bg-color: #f0f0f0
+$card-bg: white
+$primary-color: #4CAF50
+$primary-hover: #45a049
+$text-color: #333
+$error-color: red
+$border-radius: 8px
+$box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
+
+body
+  font-family: $font-family
+  display: flex
+  justify-content: center
+  align-items: center
+  height: 100vh
+  margin: 0
+  background-color: $bg-color
+
+.card
+  background-color: $card-bg
+  padding: 20px
+  border-radius: $border-radius
+  box-shadow: $box-shadow
+  text-align: center
+
+  h1
+    color: $text-color
+
+  label
+    display: block
+    margin-top: 10px
+    text-align: left
+
+  input
+    width: 100%
+    padding: 8px
+    margin-top: 5px
+    box-sizing: border-box
+
+  .btn-click
+    margin-top: 15px
+    padding: 10px 20px
+    background-color: $primary-color
+    color: white
+    border: none
+    border-radius: 4px
+    cursor: pointer
+
+    &:hover
+      background-color: $primary-hover
+
+  #login-message
+    margin-top: 15px
+    color: $error-color
